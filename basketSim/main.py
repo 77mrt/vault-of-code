@@ -38,10 +38,10 @@ class Person:
 def genPlayer():
     randThrow = random.randint(5)
     randDefense = random.randint(5)
-    f = open(r'C:\Users\liter\Documents\My Stuff\Programming projects\playernames.txt')
+    f = open(r'C:\Users\liter\Documents\GitHub\vault-of-code\basketSim\playernames.txt')
     name = f.readlines()
     randpick = random.randint(5)
-    myPerson = Person(name[randpick].rstrip(), 'off_team', True, randDefense)
+    myPerson = Person(name[randpick].rstrip(), 'off_team', True, randThrow, randDefense)
     f.close()
     return myPerson
 

@@ -1,0 +1,4 @@
+Tas Baristas True 1 2
+Rosen Baristas False 0 1
+Tas Baristas False 1 4
+Higgs Baristas False 2 2

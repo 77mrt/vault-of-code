@@ -1,0 +1,3 @@
+Higgs Zebras True 1 1
+Cal Zebras True 0 1
+Oro Zebras True 1 1

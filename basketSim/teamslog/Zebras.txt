@@ -1,3 +1,3 @@
-Higgs Zebras True 1 1
-Cal Zebras True 0 1
-Oro Zebras True 1 1
+Rosen Zebras False 3 3
+Oro Zebras False 2 3
+Oro Zebras False 0 4

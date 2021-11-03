@@ -51,8 +51,20 @@ def genPlayer(team):
 def genTeam():
     f = open(r"C:\Users\liter\Documents\GitHub\vault-of-code\basketSim\teamnames.txt")
     team = f.readlines()
-    randpick = random.randint(len(team))
-    tName = team[randpick].rstrip()
+    #randpick = random.randint(len(team))
+    tName = ""
+
+    for i in team:
+        print(i)
+
+    pick = input("Select a team: ")
+    while pick in team == False:
+        for i in team:
+            print(i)
+        pick = input("Error: Team not recognized. Select a team: ")
+
+    tName = pick.rstrip()
+
     newFile = "C:/Users/liter/Documents/GitHub/vault-of-code/basketSim/teamslog/" + tName + ".txt"
     i = 0
     t = open(newFile, 'w')
@@ -66,6 +78,19 @@ def genTeam():
     f.close()
     print(roster)
     return "The " + tName +"\n"
+
+def genTeamFromFile(teamName):
+    newFile = "C:/Users/liter/Documents/GitHub/vault-of-code/basketSim/teamslog/" + teamName + ".txt"
+    f = open(newFile, 'r')
+    list = f.readlines()
+    i = 0
+    teamlist = []
+    while i < 3:
+        parse = list[i].split()
+        currPlayer = Person(parse[0],parse[1],bool(parse[2]),int(parse[3]),int(parse[4]))
+        teamlist.append(currPlayer)
+        i += 1
+    return teamlist
 
 def hoopsGame(Person, rounds):
     player = Person
@@ -107,9 +132,12 @@ def main():
     #hoopsGame(player,10)
 
     #print(player.__str__())
-
-    team = genTeam()
-    print(team)
+    genTeam()
+    team1 = genTeamFromFile('Rockets')
+    i = 0
+    while i < len(team1):
+        print(team1[i].__str__())
+        i += 1
 
 if __name__ == '__main__':
     main()

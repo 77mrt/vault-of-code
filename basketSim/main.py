@@ -29,38 +29,28 @@ class Person:
                 print(str(success) + " < " + str(throwChance))
                 print(self.name + ' takes the shot!')
                 self.hasBall = False
-                return 'a'
+                return True
 
             else:
                 print(str(success) + " > " + str(throwChance))
                 print(self.name + ' fumbles!')
                 self.hasBall = False
-                return 'b'
+                return False
         else:
             print(self.name + ' does not have a ball!')
 
-    def blockThrow(self, chance):
+    def blockThrow(self):
         success = random.randint(0, 100)
         blockChance = 45 + (self.defenseStat * 5)
 
         if success < blockChance:
             print(str(success) + " < " + str(blockChance))
             print(self.name + ' blocks the shot!')
-            if chance == 'a':
-                # When the throw would make it to the basket, it is blocked here, no score increase
-                return False
-            elif chance == 'b':
-                # When the throw doesn't make it to the basket, it is blocked, no score increase
-                return False
+            return True
         elif success > blockChance:
             print(str(success) + " > " + str(blockChance))
             print(self.name + ' whiffs!')
-            if chance == 'a':
-                # Defense fails and the ball makes it to the basket
-                return True
-            elif chance == 'b':
-                # Defense fails but the ball misses anyway
-                return False
+            return False
 
 
 def genPlayer(team):
@@ -137,9 +127,9 @@ def hoopsGame(Person, rounds):
 
         result = player.throwBall()
 
-        if result == 'a':
+        if result:
             score += 1
-        elif result == 'b':
+        elif not result:
             misses += 1
 
         print('Score: ' + str(score))
@@ -162,21 +152,31 @@ def hoopsGame2(offPlayer, defPlayer, maxScore):
     rounds = 0
     offPlayer.hasBall = True
     while score < maxScore:
-        if offPlayer.hasBall == True:
+        if offPlayer.hasBall:
             print(offPlayer.name + ' has the ball!')
         else:
+            print(offPlayer.name + ' does not have the ball!')
             break
 
         offense = offPlayer.throwBall()
-        defense = defPlayer.blockThrow(offense)
+        defense = defPlayer.blockThrow()
 
-        if not defense:
+        if offense and defense:
             print(defPlayer.name + ' saves it! The game continues.')
             offPlayer.hasBall = True
-        elif defense:
+        elif offense and not defense:
             print(offPlayer.name + ' scores!')
             score += 1
             offPlayer.hasBall = True
+        elif not offense and defense:
+            print(defPlayer.name + ' grabs the ball! ' + defPlayer.name + ' passes it back.')
+            offPlayer.hasBall = True
+        elif not offense and not defense:
+            print('The ball is wild!')
+            randBasket = random.randint(0,100)
+            if randBasket > 50:
+                print('The ball falls in anyway.' + offPlayer.team + ' scores!')
+                score += 1
 
         rounds += 1
         datagatherer.collectHoopsGame2(offense,defense,score,True)

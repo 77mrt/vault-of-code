@@ -4,6 +4,7 @@ failThrow = 0
 successBlock = 0
 failBlock = 0
 rounds = 0
+wildscores = 0
 
 
 def collectHoopsGame2(offResult, defResult, score, cont):
@@ -12,7 +13,7 @@ def collectHoopsGame2(offResult, defResult, score, cont):
     global successBlock
     global failBlock
     global rounds
-    global firstRound
+    global wildscores
 
     if offResult == 'a':
         successThrow += 1
@@ -23,8 +24,11 @@ def collectHoopsGame2(offResult, defResult, score, cont):
     if not defResult:
         successBlock += 1
 
-    if (offResult == 'b' and not defResult) or defResult:
+    if defResult:
         failBlock += 1
+
+    if not offResult and not defResult:
+        wildscores += 1
 
     if cont:
         rounds += 1
@@ -37,3 +41,4 @@ def resultHoopsGame2():
     print('Failed Throws: ' + str(failThrow))
     print('Successful Blocks: ' + str(successBlock))
     print('Failed Blocks: ' + str(failBlock))
+    print('Times Ball went wild: ' + str(wildscores))

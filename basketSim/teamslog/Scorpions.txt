@@ -1,3 +1,3 @@
-Oro Scorpions False 0 1
-Higgs Scorpions False 4 2
-Oro Scorpions False 0 2
+Eggs Scorpions False 3 3
+Paq Scorpions False 3 5
+Shiv Scorpions False 1 3

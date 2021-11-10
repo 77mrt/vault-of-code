@@ -174,9 +174,12 @@ def hoopsGame2(offPlayer, defPlayer, maxScore):
         elif not offense and not defense:
             print('The ball is wild!')
             randBasket = random.randint(0,100)
-            if randBasket > 50:
-                print('The ball falls in anyway.' + offPlayer.team + ' scores!')
+            if randBasket > 95:
+                print('The ball falls in anyway. ' + offPlayer.team + ' scores!')
                 score += 1
+            else:
+                print('The ball falls out of bounds.')
+            offPlayer.hasBall = True
 
         rounds += 1
         datagatherer.collectHoopsGame2(offense,defense,score,True)
@@ -189,7 +192,7 @@ def hoopsGame2(offPlayer, defPlayer, maxScore):
     print('Game Over')
 
 def main():
-    player1 = Person('Cal', 'off_team', False, 1, 1)
+    player1 = Person('Cal', 'off_team', False, 3, 1)
     print(player1.name + ' enters the Court.')
     print(player1.__str__())
 

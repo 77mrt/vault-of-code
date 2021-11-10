@@ -15,16 +15,16 @@ def collectHoopsGame2(offResult, defResult, score, cont):
     global rounds
     global wildscores
 
-    if offResult == 'a':
+    if offResult:
         successThrow += 1
 
-    if offResult == 'b':
+    if not offResult:
         failThrow += 1
 
-    if not defResult:
+    if defResult:
         successBlock += 1
 
-    if defResult:
+    if not defResult:
         failBlock += 1
 
     if not offResult and not defResult:

@@ -52,7 +52,7 @@ class Person:
             print(self.name + ' whiffs!')
             return False
 
-
+#generates name and stats for a new player
 def genPlayer(team):
     randThrow = random.randint(1, 5)
     randDefense = random.randint(1, 5)
@@ -64,7 +64,7 @@ def genPlayer(team):
     f.close()
     return myPerson
 
-
+#generates new list of players for a selected team
 def genTeam():
     f = open(r"C:\Users\liter\Documents\GitHub\vault-of-code\basketSim\teamnames.txt")
     team = f.readlines()
@@ -98,7 +98,7 @@ def genTeam():
     f.close()
     print(roster)
 
-
+#returns list of players on an existing team txt file
 def readTeamFromFile(teamName):
     newFile = "C:/Users/liter/Documents/GitHub/vault-of-code/basketSim/teamslog/" + teamName + ".txt"
     f = open(newFile, 'r')
@@ -112,6 +112,22 @@ def readTeamFromFile(teamName):
         i += 1
     return teamlist
 
+def statIncrease(teamList):
+    for player in teamList:
+        blessing = random.random()
+        print(blessing)  # delete later
+        if blessing > 0.4:
+            statSelect = random.randint(1,2)
+            if statSelect == 1:
+                throwBonus = round(random.uniform(0,0.25),5)
+                print(player.name + " gains a boost to their throwing!")
+                player.throwStat = throwBonus + player.throwStat
+            elif statSelect == 2:
+                defBonus = round(random.uniform(0, 0.25),5)
+                print(player.name + " gains a boost to their defense!")
+                player.defenseStat = defBonus + player.defenseStat
+        else:
+            print('Divinity Denied.')
 
 def hoopsGame(Person, rounds):
     player = Person
@@ -192,25 +208,27 @@ def hoopsGame2(offPlayer, defPlayer, maxScore):
     print('Game Over')
 
 def main():
-    player1 = Person('Cal', 'off_team', False, 3, 1)
+    player1 = Person('Cal', 'off_team', False, 5, 1)
     print(player1.name + ' enters the Court.')
     print(player1.__str__())
 
-    player2 = Person('Ibis', 'def_team', False, 1, 1)
+    player2 = Person('Ibis', 'def_team', False, 1, 3)
     print(player2.name + ' enters the Court.')
     print(player2.__str__())
     print('')
-    hoopsGame2(player1, player2, 3)
+
+    # hoopsGame2(player1, player2, 3)
     # hoopsGame(player,10)
 
     # print(player.__str__())
     # genTeam()
-    # team1 = readTeamFromFile('Rockets')
-    # i = 0
-    # while i < len(team1):
-    #    print(team1[i].__str__())
-    #    i += 1
-
+    team1 = readTeamFromFile('Rockets')
+    statIncrease(team1)
+    i = 0
+    while i < len(team1):
+       print(team1[i].__str__())
+       i += 1
+    
 
 if __name__ == '__main__':
     main()

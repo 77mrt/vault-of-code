@@ -112,6 +112,15 @@ def readTeamFromFile(teamName):
         i += 1
     return teamlist
 
+#save stat changes to players
+def saveTeamToFile(teamList):
+    teamFile = "C:/Users/liter/Documents/GitHub/vault-of-code/basketSim/teamslog/" + teamList[0].team + ".txt"
+    f = open(teamFile, 'w')
+    for player in teamList:
+        f.write(player.savePlayer() + "\n")
+    f.close()
+
+#rewards for winning
 def statIncrease(teamList):
     for player in teamList:
         blessing = random.random()
@@ -221,14 +230,15 @@ def main():
     # hoopsGame(player,10)
 
     # print(player.__str__())
-    # genTeam()
+    genTeam()
+
     team1 = readTeamFromFile('Rockets')
     statIncrease(team1)
     i = 0
     while i < len(team1):
        print(team1[i].__str__())
        i += 1
-    
+    saveTeamToFile(team1)
 
 if __name__ == '__main__':
     main()

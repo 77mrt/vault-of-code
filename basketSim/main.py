@@ -42,7 +42,8 @@ class Person:
     def blockThrow(self):
         success = random.randint(0, 100)
         blockChance = 45 + (self.defenseStat * 5)
-
+        #Block needs tuning. Either needs to be lower so that defense doesn't entire hold the game hostage (even when defend is bad)
+        #Or offense needs another option to temporarily circumvent defence
         if success < blockChance:
             print(str(success) + " < " + str(blockChance))
             print(self.name + ' blocks the shot!')
@@ -81,6 +82,7 @@ def genTeam():
         if len(team) < pick <= 0:
             print("Not a team. Select again.")
         else:
+            #needs an error catcher here in case that file selected is empty
             print(team[pick - 1])
             tName = team[pick - 1].rstrip()
             errorCheck = True
@@ -128,11 +130,11 @@ def statIncrease(teamList):
         if blessing > 0.4:
             statSelect = random.randint(1,2)
             if statSelect == 1:
-                throwBonus = round(random.uniform(0,0.25),5)
+                throwBonus = round(random.uniform(0,0.25),4)
                 print(player.name + " gains a boost to their throwing!")
                 player.throwStat = throwBonus + player.throwStat
             elif statSelect == 2:
-                defBonus = round(random.uniform(0, 0.25),5)
+                defBonus = round(random.uniform(0, 0.25),4)
                 print(player.name + " gains a boost to their defense!")
                 player.defenseStat = defBonus + player.defenseStat
         else:
@@ -172,11 +174,13 @@ def hoopsGame(Person, rounds):
         print('Disapointing')
 
 
-def hoopsGame2(offPlayer, defPlayer, maxScore):
+def hoopsGame2(offPlayer, defPlayer):
     score = 0
     rounds = 0
+    # time is in seconds
+    time = 60
     offPlayer.hasBall = True
-    while score < maxScore:
+    while time > 0:
         if offPlayer.hasBall:
             print(offPlayer.name + ' has the ball!')
         else:
@@ -189,56 +193,73 @@ def hoopsGame2(offPlayer, defPlayer, maxScore):
         if offense and defense:
             print(defPlayer.name + ' saves it! The game continues.')
             offPlayer.hasBall = True
+            time -= 3
         elif offense and not defense:
             print(offPlayer.name + ' scores!')
             score += 1
             offPlayer.hasBall = True
+            time -= 3
         elif not offense and defense:
             print(defPlayer.name + ' grabs the ball! ' + defPlayer.name + ' passes it back.')
             offPlayer.hasBall = True
+            time -= 3
         elif not offense and not defense:
             print('The ball is wild!')
             randBasket = random.randint(0,100)
             if randBasket > 95:
                 print('The ball falls in anyway. ' + offPlayer.team + ' scores!')
                 score += 1
+                time -= 3
             else:
                 print('The ball falls out of bounds.')
+                time -= 3
             offPlayer.hasBall = True
 
+        if score == 3:
+            print(offPlayer.team + ' wins!')
+            off_team = [offPlayer]
+            print(offPlayer.name + ' is granted an increase!')
+            statIncrease(off_team)
+            break
+
         rounds += 1
-        datagatherer.collectHoopsGame2(offense,defense,score,True)
+        #datagatherer.collectHoopsGame2(offense,defense,score,True)
         print('Round: ' + str(rounds))
         print('Score: ' + str(score))
-        #sleep(3)
+        print('Time Remaining: 00:' + str(time) + ' seconds')
+        sleep(3)
         print('')
-
-    datagatherer.resultHoopsGame2()
+    if score < 3 and time == 0:
+        print(defPlayer.team + ' wins!')
+        def_team = [defPlayer]
+        print(defPlayer.name + ' is granted an increase!')
+        statIncrease(def_team)
+    #datagatherer.resultHoopsGame2()
     print('Game Over')
 
 def main():
-    player1 = Person('Cal', 'off_team', False, 5, 1)
+    player1 = Person('Cal', 'off_team', False, 1, 1)
     print(player1.name + ' enters the Court.')
     print(player1.__str__())
 
-    player2 = Person('Ibis', 'def_team', False, 1, 3)
+    player2 = Person('Ibis', 'def_team', False, 1, 1)
     print(player2.name + ' enters the Court.')
     print(player2.__str__())
     print('')
 
-    # hoopsGame2(player1, player2, 3)
+    hoopsGame2(player1, player2)
     # hoopsGame(player,10)
 
     # print(player.__str__())
-    genTeam()
+    # genTeam()
 
-    team1 = readTeamFromFile('Rockets')
-    statIncrease(team1)
-    i = 0
-    while i < len(team1):
-       print(team1[i].__str__())
-       i += 1
-    saveTeamToFile(team1)
+    #team1 = readTeamFromFile('Rockets')
+    #statIncrease(team1)
+    #i = 0
+    #while i < len(team1):
+    #   print(team1[i].__str__())
+    #   i += 1
+    #saveTeamToFile(team1)
 
 if __name__ == '__main__':
     main()

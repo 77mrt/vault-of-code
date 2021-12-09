@@ -53,6 +53,29 @@ class Person:
             print(self.name + ' whiffs!')
             return False
 
+    def passBall(self, offteamlist, defteamlist):
+        #time for AI logic
+        #runs before any throw is performed by offensive team
+        #compares throw chance to other teammate's throw chance, along with defense of defessive player blocking teammate
+        #if chance is better that current player's chance, pass ball
+        #passing can fail, gives ball to defending team, which allows teams to switch offensive and defensive positions
+        success = random.randint(0,100)
+        passChance = 45
+        while self.hasBall == True:
+            for offplayer in offteamlist:
+                if offplayer.name == self.name:
+                    pass
+                else:
+                    if offplayer.throwStat > self.throwStat:
+                        print(self.name + ' passes the ball to ' + offplayer.name + '!')
+                        if success < passChance:
+                            print(offplayer.name + ' has the ball!')
+                            offplayer.hasBall = True
+                            self.hasBall = False
+                        elif success > passChance:
+                            print(self.name + ' fumbles the pass! The defense picks it up!')
+                            self.hasBall = False
+
 #generates name and stats for a new player
 def genPlayer(team):
     randThrow = random.randint(1, 5)
@@ -224,9 +247,12 @@ def hoopsGame2(offPlayer, defPlayer):
 
         rounds += 1
         #datagatherer.collectHoopsGame2(offense,defense,score,True)
+        time2 = time/60
+        if time2 < 1:
+            time2 = 0
         print('Round: ' + str(rounds))
         print('Score: ' + str(score))
-        print('Time Remaining: 00:' + str(time) + ' seconds')
+        print('Time Remaining:  {:02d}:{:02d}'.format(time2,time))
         sleep(3)
         print('')
     if score < 3 and time == 0:
@@ -242,7 +268,7 @@ def main():
     print(player1.name + ' enters the Court.')
     print(player1.__str__())
 
-    player2 = Person('Ibis', 'def_team', False, 1, 1)
+    player2 = Person('Ibis', 'def_team', False, 1, 3)
     print(player2.name + ' enters the Court.')
     print(player2.__str__())
     print('')

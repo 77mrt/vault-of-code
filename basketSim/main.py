@@ -54,7 +54,7 @@ class Person:
             return False
 
     def passBall(self, offteamlist, defteamlist):
-        #time for AI logic
+        #time for logic
         #runs before any throw is performed by offensive team
         #compares throw chance to other teammate's throw chance, along with defense of defessive player blocking teammate
         #if chance is better that current player's chance, pass ball
@@ -63,10 +63,12 @@ class Person:
         passChance = 45
         while self.hasBall == True:
             for offplayer in offteamlist:
-                if offplayer.name == self.name:
+                loc = offteamlist.index(offplayer)
+                if offplayer.name == self.name and offteamlist.index(offplayer.name) == offteamlist.index(self.name):
                     pass
                 else:
-                    if offplayer.throwStat > self.throwStat:
+                    opposingPlayer = defteamlist[int(loc)]
+                    if offplayer.throwStat > self.throwStat and opposingPlayer.defenseStat <= offplayer.throwStat:
                         print(self.name + ' passes the ball to ' + offplayer.name + '!')
                         if success < passChance:
                             print(offplayer.name + ' has the ball!')

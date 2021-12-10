@@ -6,16 +6,54 @@ from time import sleep
 
 
 class Person:
-
-    def __init__(self, name, team, hasBall, throwStat, defenseStat):
+    #time to make some changes in another branch, hooray for git
+    def __init__(self, name, team):
         self.name = name
         self.team = team
-        self.hasBall = hasBall
-        self.throwStat = throwStat
-        self.defenseStat = defenseStat
+        self.hasBall = False
+        #visible stats (in str) are Throwing(T) Defense(D) Passing(P) and Court Presence(C)
+        #individual stats should not be greater than 1, even with an increase
+        #TODO: create function that normalizes stats to prevent them from going past 1
+        self.alacrity = 0 #Speed, applies to TDP
+        self.crime = 4 #DC
+        self.cunning = 0  #C
+        self.length = 0 #D
+        self.muscle = 0 #T
+        self.nimbleness = 0 #P
+        self.telepathy = 0 #P
+        self.temperament = 0 #C
+        self.weight = 0 #T
+        self.width = 0 #D
+        self.throwStat = 0
+        self.defenseStat = 0
+        self.passingStat = 0
 
     def __str__(self):
         return 'Player: {} \nThrowing: {} \nDefense: {}'.format(self.name, self.throwStat, self.defenseStat)
+
+    def setStatList(self, statArray):
+        self.alacrity = statArray[0]
+        self.crime = 4
+        self.cunning = statArray[1]
+        self.length = statArray[2]
+        self.muscle = statArray[3]
+        self.nimbleness = statArray[4]
+        self.telepathy = statArray[5]
+        self.temperament = statArray[6]
+        self.weight = statArray[7]
+        self.width = statArray[8]
+        self.throwStat = round(self.muscle + (0.27/self.weight) + (self.alacrity * 0.5),1)
+        if self.throwStat > 5:
+            self.throwStat = 5
+        self.defenseStat = round((self.length*1.5) + (self.width/0.5) + (self.alacrity * 0.2) - (self.crime * 0.1),1)
+        if self.defenseStat > 5:
+            self.defenseStat = 5
+        self.passingStat = round(self.nimbleness + self.telepathy + (self.alacrity * 0.76) + (self.crime *0.2),1)
+        if self.passingStat > 5:
+            self.passingStat = 5
+
+    def getStatList(self):
+        return [self.alacrity, self.crime, self.cunning, self.length, self.muscle, self.nimbleness, self.telepathy, self.temperament, self.weight, self.width]
 
     def savePlayer(self):
         return '{} {} {} {} {}'.format(self.name, self.team, self.hasBall, self.throwStat, self.defenseStat)
@@ -78,15 +116,17 @@ class Person:
                             print(self.name + ' fumbles the pass! The defense picks it up!')
                             self.hasBall = False
 
+
 #generates name and stats for a new player
 def genPlayer(team):
-    randThrow = random.randint(1, 5)
-    randDefense = random.randint(1, 5)
+    statArray = [round(random.uniform(0.1,0.5),3) for i in range(9)]
+    print(statArray)
     f = open(r'C:\Users\liter\Documents\GitHub\vault-of-code\basketSim\playernames.txt')
     name = f.readlines()
     randpick = random.randint(0, len(name) - 1)
     print(randpick)  # delete later
-    myPerson = Person(name[randpick].rstrip(), team, False, randThrow, randDefense)
+    myPerson = Person(name[randpick].rstrip(), team)
+    myPerson.setStatList(statArray)
     f.close()
     return myPerson
 
@@ -266,16 +306,21 @@ def hoopsGame2(offPlayer, defPlayer):
     print('Game Over')
 
 def main():
-    player1 = Person('Cal', 'off_team', False, 1, 1)
-    print(player1.name + ' enters the Court.')
-    print(player1.__str__())
+    #player1 = Person('Cal', 'off_team')
+    #print(player1.name + ' enters the Court.')
+    #print(player1.__str__())
 
-    player2 = Person('Ibis', 'def_team', False, 1, 3)
-    print(player2.name + ' enters the Court.')
-    print(player2.__str__())
-    print('')
+    #player2 = Person('Ibis', 'def_team')
+    #print(player2.name + ' enters the Court.')
+    #print(player2.__str__())
 
-    hoopsGame2(player1, player2)
+    newguy = genPlayer('off_team')
+    print(newguy.name)
+    print(newguy.getStatList())
+    print(newguy.throwStat)
+    print(newguy.defenseStat)
+    print(newguy.passingStat)
+    # hoopsGame2(player1, player2)
     # hoopsGame(player,10)
 
     # print(player.__str__())
